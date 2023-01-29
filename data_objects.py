@@ -58,6 +58,9 @@ class Fluorophore():
     
     def get_spectra(self):
         return self.spectra
+    
+    def get_name(self):
+        return self.name
 
 # returns list of all spectra
 def get_spectra_list(wavelength_range=(400,900)):
