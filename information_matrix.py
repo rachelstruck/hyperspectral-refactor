@@ -18,6 +18,20 @@ def form_q_vec(illumination_df, qe):
     q_vec = np.array(q_vec.array)
     return q_vec
 
+def fast_form_q_vec(
+    qe,                        # quantum efficiency
+    bin_wavelength_range,      # length 2 ordered int tuple with first and last wavelengths detected
+    bin_width,                 # int denoting size of each wavelength bin
+    N_ex                       # number of illuminations performed
+    ):
+    N_em = (bin_wavelength_range[1] - bin_wavelength_range[0])//bin_width
+    idx = np.arange(N_ex*N_em)
+    bins_list = np.arange(*bin_wavelength_range, bin_width)
+    bins_list_centered = bins_list + bin_width//2
+    q_vec = np.array(qe.loc[bins_list_centered])[idx % N_em]
+    return q_vec
+
+
 """Computes Fisher information matrix of model, where
         A is the imaging matrix, which determines the mean number of photons that each pixel recieves
         x_vec is the vector of fluorophore concentrations
@@ -26,7 +40,7 @@ def form_q_vec(illumination_df, qe):
     Uses the matrix formula to avoid for loops
 """
 def FIM(A, x_vec, q_vec, variance):
-    y_vec = A @ x_vec
+    y_vec = q_vec*(A @ x_vec)
     variance_vec = y_vec + variance
     inverse_variance_vec = 1/variance_vec
     diag_vec = q_vec*q_vec * inverse_variance_vec * (1 + inverse_variance_vec/2)

@@ -74,7 +74,7 @@ def get_spectra_list(wavelength_range=(400,900)):
 ## preferable to above function (if you want to call both, just call this one and use map(Fluorophore.get_spectra,fluorophore_list)
 ## to compute spectra_list in order to reduce redundant computation)
 def get_fluorophore_list(wavelength_range=(400,900)):
-    fluorphore_list = []
+    fluorophore_list = []
     for fluorophore_name, fluorophore_brightness in zip(fluorophore_string_list, brightness_list):
-        fluorphore_list.append(Fluorophore(fluorophore_name, fluorophore_brightness, index_range=wavelength_range))
-    return fluorphore_list
+        fluorophore_list.append(Fluorophore(fluorophore_name, fluorophore_brightness, index_range=wavelength_range))
+    return fluorophore_list
