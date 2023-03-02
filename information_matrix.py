@@ -46,3 +46,9 @@ def FIM(A, x_vec, q_vec, variance):
     diag_vec = q_vec*q_vec * inverse_variance_vec * (1 + inverse_variance_vec/2)
     F = (A.T * diag_vec) @ A
     return F
+
+def FIM_poisson(A, x_vec):
+    y = A @ x_vec
+    y_inv = 1/y
+    y_inv[y_inv == np.inf] = 0
+    return (A.T * y_inv) @ A
